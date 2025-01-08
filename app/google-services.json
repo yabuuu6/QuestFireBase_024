@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "684103559247",
+    "project_id": "pam-firebase-11a7e",
+    "storage_bucket": "pam-firebase-11a7e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684103559247:android:cf63463d4d2d1ace50623a",
+        "android_client_info": {
+          "package_name": "com.example.pertemuan14"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWSldyUulUpX-rsYwCaGCCZV16NTeZhmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
