@@ -4,8 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.pertemuan14.Repository.RepositoryMhs
-
+import com.example.pertemuan14.model.Mahasiswa
+import kotlinx.coroutines.launch
 
 class InsertViewModel(
     private val repositoryMhs: RepositoryMhs
@@ -18,7 +20,7 @@ class InsertViewModel(
         private set
 
     fun updateState(mahasiswaEvent: MahasiswaEvent) {
-        uiEvent = uiEvent.copy(
+        uiEvent = uiEvent.copy (
             insertUiEvent = mahasiswaEvent,
         )
     }
@@ -37,4 +39,28 @@ class InsertViewModel(
         return errorState.isValid()
     }
 
+    fun insertMhs() {
+        if (validateFields()) {
+            viewModelScope.launch {
+                uiState = FormState.Loading
+                try {
+                    repositoryMhs.insertMhs(uiEvent.insertUiEvent.toMhsModel())
+                    uiState = FormState.Success("Data berhasil disimpan")
+                } catch (e: Exception) {
+                    uiState = FormState.Error("Data gagal disimpan")
+                }
+            }
+        } else {
+            uiState = FormState.Error("Data tidak valid")
+        }
+    }
+    fun resetForm() {
+        uiEvent = InsertUiState()
+        uiState = FormState.Idle
+    }
+
+    fun resetSnackBarMessage() {
+        uiState = FormState.Idle
+    }
 }
+
