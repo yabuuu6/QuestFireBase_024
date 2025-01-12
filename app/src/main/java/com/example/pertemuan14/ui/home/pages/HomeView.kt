@@ -75,7 +75,7 @@ fun HomeScreen(
             modifier = Modifier.padding(innerPadding),
             onDetailClick = onDetailClick,
             onDeleteClick = {
-                viewModel.getMhs()
+                viewModel.deleteMhs(it)
             }
         )
     }
@@ -228,8 +228,9 @@ fun MhsCard(
 
 @Composable
 private fun DeleteConfirmationDialog (
-    onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier =
-        Modifier
+    onDeleteConfirm: () -> Unit,
+    onDeleteCancel: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     AlertDialog(onDismissRequest = { /* Do nothing */ },
         title = { Text("Delete Data") },
@@ -247,3 +248,4 @@ private fun DeleteConfirmationDialog (
         }
     )
 }
+

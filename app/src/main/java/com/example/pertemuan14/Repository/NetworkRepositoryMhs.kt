@@ -10,30 +10,28 @@ import kotlinx.coroutines.tasks.await
 
 class NetworkRepositoryMhs (
     private  val firestore : FirebaseFirestore
-) : RepositoryMhs {
+) : RepositoryMhs{
     override suspend fun insertMhs(mahasiswa: Mahasiswa) {
-        try {
+        try{
             firestore.collection("Mahasiswa").add(mahasiswa).await()
         } catch (e: Exception) {
-            throw Exception(
-                "Gagal menambahkan data mahasiswa :" +
-                        "${e.message}"
-            )
+            throw Exception("Gagal menambahkan data mahasiswa :" +
+                    "${e.message}")
         }
     }
 
     override fun getAllMhs(): Flow<List<Mahasiswa>> = callbackFlow {
         val mhsCollection = firestore.collection("Mahasiswa")
             .orderBy("nim", Query.Direction.ASCENDING)
-            .addSnapshotListener { value, error ->
-                if (value != null) {
+            .addSnapshotListener{value, error ->
+                if(value !=null){
                     val mhsList = value.documents.mapNotNull {
                         it.toObject(Mahasiswa::class.java)!!
                     }
                     trySend(mhsList)
                 }
             }
-        awaitClose {
+        awaitClose{
             mhsCollection.remove()
         }
     }
@@ -47,23 +45,32 @@ class NetworkRepositoryMhs (
                     trySend(mhs)
                 }
             }
-        awaitClose {
+        awaitClose{
             mhsDocument.remove()
         }
     }
 
     override suspend fun deleteMhs(mahasiswa: Mahasiswa) {
-        try {
+        try{
             firestore.collection("Mahasiswa")
                 .document(mahasiswa.nim)
                 .delete()
                 .await()
         } catch (e: Exception) {
-            throw Exception(
-                "Gagal menghapus data mahasiswa : " +
-                        "${e.message}"
-            )
+            throw Exception ("Gagal menghapus data mahasiswa : " +
+                    "${e.message}")
         }
     }
 
+    override suspend fun updateMhs(mahasiswa: Mahasiswa) {
+        try {
+            firestore.collection("Mahasiswa")
+                .document(mahasiswa.nim)
+                .set(mahasiswa)
+                .await()
+        } catch (e:Exception){
+            throw Exception ("Gagal mengupdate data mahasiswa:" +
+                    "${e.message}")
+        }
+    }
 }
