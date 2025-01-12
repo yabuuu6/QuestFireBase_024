@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val repositoryMhs: RepositoryMhs
+
 ): ViewModel() {
     var mhsUIState:HomeUiState by mutableStateOf(HomeUiState.Loading)
         private set
@@ -20,6 +21,7 @@ class HomeViewModel(
     init{
         getMhs()
     }
+
 
     fun getMhs(){
         viewModelScope.launch {
@@ -39,6 +41,16 @@ class HomeViewModel(
                 }
         }
     }
+    fun deleteMhs (mahasiswa: Mahasiswa) {
+        viewModelScope.launch {
+            try {
+                repositoryMhs.deleteMhs(mahasiswa)
+            }catch (e: Exception){
+                mhsUIState = HomeUiState.Error(e)
+            }
+
+        }
+    }
 }
 
 sealed class  HomeUiState {
@@ -48,3 +60,4 @@ sealed class  HomeUiState {
 
     data class Error(val e: Throwable) :HomeUiState()
 }
+
