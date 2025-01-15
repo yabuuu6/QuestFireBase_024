@@ -1,7 +1,9 @@
 package com.example.pertemuan14.ui.home.pages
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -75,6 +77,7 @@ fun InsertMhsView(
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp)
+
         ) {
             InsertBodyMhs(
                 uiState = uiEvent,
@@ -101,7 +104,9 @@ fun InsertBodyMhs(
     homeUiState: FormState
 ){
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -109,11 +114,13 @@ fun InsertBodyMhs(
             mahasiswaEvent = uiState.insertUiEvent,
             onValueChange = onValueChange,
             errorState = uiState.isEntryValid,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
         )
         Button(
             onClick = onClick,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             enabled = homeUiState !is FormState.Loading,
         ) {
             if (homeUiState is FormState.Loading) {
@@ -142,7 +149,8 @@ fun FormMahasiswa(
     val kelas = listOf("A", "B", "C", "D", "E")
 
     Column(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
     ){
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -171,6 +179,46 @@ fun FormMahasiswa(
         )
         Text(
             text = errorState.nim ?: "",
+            color = Color.Red
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.judulSkripsi,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(judulSkripsi = it)) },
+            label = { Text("Judul Skripsi") },
+            isError = errorState.judulSkripsi != null,
+            placeholder = { Text("Masukkan Judul") },
+        )
+        Text(
+            text = errorState.judulSkripsi ?: "",
+            color = Color.Red
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.dosenPembimbing1,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(dosenPembimbing1 = it)) },
+            label = { Text("Dosen Pembimbing 1") },
+            isError = errorState.dosenPembimbing1 != null,
+            placeholder = { Text("Masukkan Dosen Pembimbing 1") },
+        )
+        Text(
+            text = errorState.dosenPembimbing1 ?: "",
+            color = Color.Red
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.dosenPembimbing2,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(dosenPembimbing2 = it)) },
+            label = { Text("Dosen Pembimbing 2") },
+            isError = errorState.nama != null,
+            placeholder = { Text("Masukkan Dosen Pembimbing 2") },
+        )
+        Text(
+            text = errorState.dosenPembimbing2 ?: "",
             color = Color.Red
         )
 
